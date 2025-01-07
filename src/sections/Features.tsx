@@ -1,6 +1,8 @@
 'use client';
 
 import { DotLottiePlayer } from '@dotlottie/react-player';
+import productImage from '@/assets/product-image.png';
+import Image from 'next/image';
 
 const tabs = [
   {
@@ -31,18 +33,37 @@ const tabs = [
 
 export const Features = () => {
   return (
-    <section>
+    <section className='py-20'>
       <div className='container'>
-        <h2>Elevate your SEO efforts.</h2>
-        <p>
+        <h2 className='text-5xl md:text-6xl font-medium text-center tracking-tighter'>
+          Elevate your SEO efforts.
+        </h2>
+        <p className='text-white/70 text-lg tracking-tight text-center max-w-2xl mx-auto mt-5'>
           From small startups to l arge enterprises, our Ai driven tool has
           revolutionaized the way businesses approach SEO.
         </p>
-        {tabs.map((tab) => (
-          <div key={tab.title}>
-            <DotLottiePlayer className='h-5 w-5' autoplay src={tab.icon} />
-          </div>
-        ))}
+        <div className='mt-10 flex flex-col lg:flex-row justify-center gap-3'>
+          {tabs.map((tab) => (
+            <div
+              key={tab.title}
+              className='border border-white/15 flex lg:flex-1 p-2.5 rounded-xl gap-2.5 items-center'>
+              <div className='h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center'>
+                <DotLottiePlayer className='h-5 w-5' autoplay src={tab.icon} />
+              </div>
+              <div className='font-medium'>{tab.title}</div>
+              {tab.isNew && (
+                <div className='text-xs rounded-full px-2 py-0.5 bg-[#8c44ff] text-black'>
+                  New
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className='border border-white/20 p-2.5 rounded-xl mt-3'>
+          <div
+            className='aspect-video bg-cover border border-white/20 rounded-lg'
+            style={{ backgroundImage: `url(${productImage.src})` }}></div>
+        </div>
       </div>
     </section>
   );
