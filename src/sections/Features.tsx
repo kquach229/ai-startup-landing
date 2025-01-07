@@ -1,8 +1,12 @@
 'use client';
 
-import { DotLottiePlayer } from '@dotlottie/react-player';
+import {
+  DotLottieCommonPlayer,
+  DotLottiePlayer,
+} from '@dotlottie/react-player';
 import productImage from '@/assets/product-image.png';
 import Image from 'next/image';
+import { useRef } from 'react';
 
 const tabs = [
   {
@@ -31,6 +35,45 @@ const tabs = [
   },
 ];
 
+interface Tab {
+  title: string;
+  icon: string;
+  isNew: Boolean;
+  backgroundPositionX: number;
+  backgroundPositionY: number;
+  backgroundSizeX: number;
+}
+
+const FeaturesTab = (tab: Tab) => {
+  const dotLottieRef = useRef<DotLottieCommonPlayer>(null);
+
+  const handleTabHover = () => {
+    if (dotLottieRef.current === null) return;
+    dotLottieRef.current.seek(0);
+    dotLottieRef.current.play();
+  };
+  return (
+    <div
+      onMouseEnter={handleTabHover}
+      key={tab.title}
+      className='border border-white/15 flex lg:flex-1 p-2.5 rounded-xl gap-2.5 items-center'>
+      <div className='h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center'>
+        <DotLottiePlayer
+          ref={dotLottieRef}
+          className='h-5 w-5'
+          src={tab.icon}
+        />
+      </div>
+      <div className='font-medium'>{tab.title}</div>
+      {tab.isNew && (
+        <div className='text-xs rounded-full px-2 py-0.5 bg-[#8c44ff] text-black'>
+          New
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Features = () => {
   return (
     <section className='py-20'>
@@ -44,19 +87,7 @@ export const Features = () => {
         </p>
         <div className='mt-10 flex flex-col lg:flex-row justify-center gap-3'>
           {tabs.map((tab) => (
-            <div
-              key={tab.title}
-              className='border border-white/15 flex lg:flex-1 p-2.5 rounded-xl gap-2.5 items-center'>
-              <div className='h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center'>
-                <DotLottiePlayer className='h-5 w-5' autoplay src={tab.icon} />
-              </div>
-              <div className='font-medium'>{tab.title}</div>
-              {tab.isNew && (
-                <div className='text-xs rounded-full px-2 py-0.5 bg-[#8c44ff] text-black'>
-                  New
-                </div>
-              )}
-            </div>
+            <FeaturesTab key={tab.title} {...tab} />
           ))}
         </div>
         <div className='border border-white/20 p-2.5 rounded-xl mt-3'>
